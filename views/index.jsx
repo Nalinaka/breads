@@ -21,10 +21,8 @@ function Index ({breads, title})  {
   })
 }
 
-
   </ul>
 </Default>
-
 
 
     )
