@@ -16,13 +16,39 @@ breads.get('/:indexArray/edit', (req, res) => {
 })
 
 
-// SHOW
 breads.get('/', (req, res) => {
-    //res.send(Bread)
-    res.render('Index', {
-      breads: Bread
-  })
-  })
+  Bread.find()
+      .then(foundBreads => {
+          res.render('index', {
+              breads: foundBreads,
+              title: 'Index Page'
+          })
+      })
+})
+
+breads.post('/', (req, res) => {
+  if(!req.body.image) {
+      req.body.image = undefined 
+  }
+  if(req.body.hasGluten === 'on') {
+    req.body.hasGluten = true
+  } else {
+    req.body.hasGluten = false
+  }
+  Bread.create(req.body)
+  res.redirect('/breads')
+})
+
+
+
+
+// SHOW
+// breads.get('/', (req, res) => {
+//     //res.send(Bread)
+//     res.render('Index', {
+//       breads: Bread
+//   })
+//   })
 
 
   
