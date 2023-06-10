@@ -26,21 +26,6 @@ breads.get('/', (req, res) => {
       })
 })
 
-breads.post('/', (req, res) => {
-  if(!req.body.image) {
-      req.body.image = undefined 
-  }
-  if(req.body.hasGluten === 'on') {
-    req.body.hasGluten = true
-  } else {
-    req.body.hasGluten = false
-  }
-  Bread.create(req.body)
-  res.redirect('/breads')
-})
-
-
-
 
 // SHOW
 // breads.get('/', (req, res) => {
@@ -54,30 +39,45 @@ breads.post('/', (req, res) => {
   
 // INDEX - render means "show this"
 
-// SHOW
-breads.get('/:arrayIndex', (req, res) => {
-    if (Bread[req.params.arrayIndex]) {
-      res.render('Show', {
-        bread:Bread[req.params.arrayIndex],
-        index: req.params.arrayIndex,
+// EDIT
+// breads.get('/:arrayIndex', (req, res) => {
+//     if (Bread[req.params.arrayIndex]) {
+//       res.render('Show', {
+//         bread:Bread[req.params.arrayIndex],
+//         index: req.params.arrayIndex,
+//       })
+//     } else {
+//       res.send('404')
+//     }
+//   })
+
+
+breads.get('/:id', (req, res) => {
+  Bread.findById(req.params.id)
+      .then(foundBread => {
+          res.render('show', {
+              bread: foundBread
+          })
+      }).catch(err => {
+        res.send('404')
       })
-    } else {
-      res.send('404')
-    }
-  })
+})
+
+
 
 // CREATE
-breads.post('/', express.urlencoded({ extended: true }), (req, res) => {
+breads.post('/', express.urlencoded({ extended: true }), 
+    (req, res) => {
+   //   console.log(undefined)
   if (!req.body.image) {
-    req.body.image = 
-  'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8NXx8fGVufDB8fHx8fA%3D%3D&w=400&q=80'
+    req.body.image = undefined
   }
     if(req.body.hasGluten === 'on') {
       req.body.hasGluten = 'true'
     } else {
       req.body.hasGluten = 'false'
     }
-    Bread.push(req.body)
+    Bread.create(req.body)
     res.redirect('/breads')
   })
 
