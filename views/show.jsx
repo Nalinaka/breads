@@ -1,8 +1,8 @@
 const React = require('react')
-const Default = require('./layouts/Default')
+const Default = require('./layouts/default')
 
-function Show({bread, index}){
-    console.log(bread.name)
+function Show({bread, id}){
+    console.log(bread.name);
     return(
         <Default>
         <h3>{bread.name}</h3>
@@ -23,7 +23,8 @@ function Show({bread, index}){
       <input type='submit' value="DELETE"/>
     </form>
       </Default>
-    )}
+    );
+  }
 
 module.exports = Show
 

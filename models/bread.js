@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 // creating shorthand for the Schema constructor 
 const { Schema } = mongoose 
 
+
 //Schema
 const breadSchema = new Schema({
   name: { type: String, required: true },
@@ -13,11 +14,12 @@ const breadSchema = new Schema({
       enum: ['Rachel', 'Monica', 'Joey', 'Chandler', 'Ross', 'Phoebe']
     },
     // helper methods 
-  breadSchema.methods.getBakedBy = function(){
-  return `${this.name} was baked with love by ${this.baker}`
-}
 
 })
+
+breadSchema.methods.getBakedBy = function(){
+  return `${this.name} was baked with love by ${this.baker}`
+}
 
 //model and export
 const Bread = mongoose.model('Bread', breadSchema)
