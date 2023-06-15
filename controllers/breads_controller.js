@@ -1,37 +1,64 @@
 const express = require('express')
 const breads = express.Router()
 const Bread = require('../models/bread.js')
+const Baker = require('../models/baker.js')
 
-// NEW
+// in the new route
 breads.get('/new', (req, res) => {
-    res.render('new')
+  Baker.find()
+      .then(foundBakers => {
+          res.render('new', {
+              bakers: foundBakers
+          })
+    })
 })
+
 
 // EDIT
 breads.get('/:id/edit', (req, res) => {
-  Bread.findById(req.params.id) 
-    .then(foundBread => { 
-      res.render('edit', {
-        bread: foundBread 
-      })
-    })  
+  Baker.find()
+    .then(foundBakers => {
+        Bread.findById(req.params.id)
+          .then(foundBread => {
+            res.render('edit', {
+                bread: foundBread, 
+                bakers: foundBakers 
+            })
+          })
+    })
 })
+
+// INDEX - render means "show this"
+breads.get('/', (req, res) => {
+  Baker.find()
+    .then(foundBakers => {
+      Bread.find()
+      .then(foundBreads => {
+          res.render('index', {
+              breads: foundBreads,
+              bakers: foundBakers,
+              title: 'Index Page'
+          })
+      })
+    })
+})
+
+
+//EDIT old code replaced by above code 
+// breads.get('/', (req, res) => {
+//   Bread.find()
+//       .then(foundBreads => {
+//           res.render('index', {
+//               breads: foundBreads,
+//               title: 'Index Page'
+//           })
+//       })
+// })
 
 
   // BEFORE MONGOOSE CODE ADDED
   // bread: Bread[req.params.indexArray],
   //  index: req.params.indexArray
-
-
-breads.get('/', (req, res) => {
-  Bread.find()
-      .then(foundBreads => {
-          res.render('index', {
-              breads: foundBreads,
-              title: 'Index Page'
-          })
-      })
-})
 
 
 // SHOW
@@ -42,9 +69,6 @@ breads.get('/', (req, res) => {
 //   })
 //   })
 
-
-  
-// INDEX - render means "show this"
 
 // EDIT
 // breads.get('/:arrayIndex', (req, res) => {
@@ -62,6 +86,7 @@ breads.get('/', (req, res) => {
 // SHOW
 breads.get('/:id', (req, res) => {
   Bread.findById(req.params.id)
+  .populate('baker')
       .then(foundBread => {
         const bakedBy = foundBread.getBakedBy() 
         console.log(bakedBy)
@@ -69,7 +94,7 @@ breads.get('/:id', (req, res) => {
             bread: foundBread
         })
       }).catch(err => {
-        res.send('404')
+        res.send('<h1>404: This is not a page you should be on')
       })
 
       })
