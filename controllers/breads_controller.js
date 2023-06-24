@@ -29,20 +29,19 @@ breads.get('/:id/edit', (req, res) => {
 })
 
 // INDEX - render means "show this"
-breads.get('/', (req, res) => {
-  Baker.find()
-    .then(foundBakers => {
-      Bread.find()
-      .then(foundBreads => {
+breads.get('/', async (req, res) => {
+  const foundBakers = await Baker.find();
+  const foundBreads = await Bread.find().limit(5).lean()
+  console.log(foundBreads, "Yay!!")
           res.render('index', {
-              breads: foundBreads,
-              bakers: foundBakers,
-              title: 'Index Page'
-          })
-      })
-    })
-})
+          breads: foundBreads,
+          bakers: foundBakers,
+          title: 'Index Page'
+          });
+      });
 
+   // .then(foundBakers => {
+   //   .then(foundBreads => {
 
 //EDIT old code replaced by above code 
 // breads.get('/', (req, res) => {
