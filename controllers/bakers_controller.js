@@ -38,9 +38,10 @@ baker.get('/:id', (req, res) => {
 })
 
 
+//seed
 baker.get('/data/seed', (req, res) => {
     Baker.insertMany(bakerSeedData)
-        .then(res.redirect('/breads'))
+    .then(res.redirect('/breads'))
 })
 
 // export

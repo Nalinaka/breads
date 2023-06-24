@@ -2,6 +2,7 @@ const express = require('express')
 const breads = express.Router()
 const Bread = require('../models/bread.js')
 const Baker = require('../models/baker.js')
+const breadSeedData = require('../models/seed.js')
 
 // in the new route
 breads.get('/new', (req, res) => {
@@ -139,6 +140,17 @@ breads.delete('/:id', (req, res) => {
       res.status(303).redirect('/breads')
     })
 })
+
+// SEED ROUTE 
+breads.get('/data/seed', (req, res) => {
+  Bread.insertMany(breadSeedData)
+    .then(createdBreads => {
+      res.redirect('/breads')
+    })
+})
   
   // res.send(Bread)
 module.exports = breads
+
+
+
